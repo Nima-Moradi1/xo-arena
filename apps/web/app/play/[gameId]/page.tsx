@@ -1,0 +1,175 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { io, type Socket } from "socket.io-client";
+import { Copy, Loader2, RotateCcw } from "lucide-react";
+import type { ClientToServerEvents, GameDto, Mark, ServerToClientEvents } from "@xo/shared";
+import { GameBoard } from "@/components/game/game-board";
+import { PlayerCard } from "@/components/game/player-card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { apiFetch, ApiClientError } from "@/lib/api";
+import { gameStatusLabel } from "@/lib/utils";
+import { useProtectedRoute } from "@/hooks/use-protected-route";
+
+type GameSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
+
+export default function PlayPage() {
+  const { user, isLoading } = useProtectedRoute();
+  const params = useParams<{ gameId: string }>();
+  const router = useRouter();
+  const gameId = params.gameId;
+  const [game, setGame] = useState<GameDto | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const socketRef = useRef<GameSocket | null>(null);
+
+  const viewerMark: Mark | null = useMemo(() => {
+    if (!game || !user) return null;
+    if (game.xPlayer.id === user.id) return "X";
+    if (game.oPlayer?.id === user.id) return "O";
+    return null;
+  }, [game, user]);
+
+  const statusMessage = useMemo(() => {
+    if (!game) return "Loading game...";
+    if (game.status === "WAITING") return "Waiting for another online player to join.";
+    if (game.status === "DRAW") return "The game ended in a draw.";
+    if (game.status === "X_WON" || game.status === "O_WON") {
+      return game.winner ? `${game.winner.nickname} won this game.` : "The computer won this game.";
+    }
+    if (viewerMark === game.currentTurn) return "Your turn.";
+    return "Opponent's turn.";
+  }, [game, viewerMark]);
+
+  async function loadGame() {
+    const data = await apiFetch<{ game: GameDto }>(`/games/${gameId}`);
+    setGame(data.game);
+  }
+
+  useEffect(() => {
+    if (!user || !gameId) return;
+    loadGame().catch((err) => setError(err instanceof ApiClientError ? err.message : "Could not load game."));
+  }, [user, gameId]);
+
+  useEffect(() => {
+    if (!user || !game || game.mode !== "ONLINE") return;
+
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL ?? "http://localhost:4000";
+    const socket: GameSocket = io(socketUrl, { withCredentials: true, transports: ["websocket", "polling"] });
+    socketRef.current = socket;
+
+    socket.on("connect", () => socket.emit("game:join", { gameId: game.id }));
+    socket.on("game:state", (nextGame) => setGame(nextGame));
+    socket.on("game:error", (payload) => setError(payload.message));
+
+    return () => {
+      socket.disconnect();
+      socketRef.current = null;
+    };
+  }, [user, game?.id, game?.mode]);
+
+  useEffect(() => {
+    if (!game || game.status !== "WAITING") return;
+    const interval = window.setInterval(() => {
+      loadGame().catch(() => undefined);
+    }, 2500);
+    return () => window.clearInterval(interval);
+  }, [game?.status, gameId]);
+
+  async function handleMove(position: number) {
+    if (!game || busy || game.status !== "IN_PROGRESS") return;
+    setError(null);
+    setBusy(true);
+    try {
+      if (game.mode === "ONLINE") {
+        socketRef.current?.emit("game:move", { gameId: game.id, position });
+      } else {
+        const data = await apiFetch<{ game: GameDto }>(`/games/${game.id}/move`, {
+          method: "POST",
+          body: JSON.stringify({ position })
+        });
+        setGame(data.game);
+      }
+    } catch (err) {
+      setError(err instanceof ApiClientError ? err.message : "Move failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function copyGameId() {
+    if (!game) return;
+    await navigator.clipboard.writeText(game.id);
+  }
+
+  if (isLoading || !user || !game) {
+    return <div className="mx-auto max-w-6xl px-4 py-16 text-muted-foreground">Loading game...</div>;
+  }
+
+  const isPlayersTurn = game.status === "IN_PROGRESS" && viewerMark === game.currentTurn;
+  const boardDisabled = busy || !isPlayersTurn;
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-10">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">{game.mode === "SINGLE_PLAYER" ? "Single player" : "Online"}</Badge>
+            <Badge variant={game.status === "IN_PROGRESS" ? "default" : "secondary"}>{gameStatusLabel(game.status)}</Badge>
+          </div>
+          <h1 className="text-3xl font-black tracking-tight">Game room</h1>
+          <p className="mt-2 text-muted-foreground">{statusMessage}</p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={copyGameId}><Copy className="h-4 w-4" /> Copy ID</Button>
+          <Button variant="outline" onClick={() => router.push("/lobby")}><RotateCcw className="h-4 w-4" /> Lobby</Button>
+        </div>
+      </div>
+
+      {error && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+        <Card>
+          <CardContent className="p-4 sm:p-6">
+            <GameBoard board={game.board} disabled={boardDisabled} onMove={handleMove} />
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4">
+          <PlayerCard player={game.xPlayer} mark="X" active={game.currentTurn === "X" && game.status === "IN_PROGRESS"} />
+          <PlayerCard player={game.oPlayer} mark="O" active={game.currentTurn === "O" && game.status === "IN_PROGRESS"} />
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                Move log {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+              </CardTitle>
+              <CardDescription>Every move is saved to MySQL.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {game.moves.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No moves yet.</p>
+              ) : (
+                <ol className="space-y-2 text-sm">
+                  {game.moves.map((move) => (
+                    <li key={move.id} className="flex items-center justify-between rounded-md bg-muted px-3 py-2">
+                      <span>#{move.moveNumber} {move.user?.nickname ?? "Computer"}</span>
+                      <Badge variant="outline">{move.mark} → {move.position + 1}</Badge>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

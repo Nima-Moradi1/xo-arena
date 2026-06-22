@@ -1,0 +1,25 @@
+{
+  "name": "xo-arena",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web -c cyan,magenta \"pnpm --filter @xo/server dev\" \"pnpm --filter @xo/web dev\"",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --filter @xo/db prisma:generate",
+    "db:migrate": "pnpm --filter @xo/db prisma:migrate",
+    "db:studio": "pnpm --filter @xo/db prisma:studio",
+    "db:seed": "pnpm --filter @xo/db seed"
+  },
+  "devDependencies": {
+    "concurrently": "latest",
+    "prettier": "latest",
+    "typescript": "latest"
+  }
+}

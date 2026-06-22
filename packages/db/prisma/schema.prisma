@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum GameMode {
+  SINGLE_PLAYER
+  ONLINE
+}
+
+enum GameStatus {
+  WAITING
+  IN_PROGRESS
+  X_WON
+  O_WON
+  DRAW
+  ABANDONED
+}
+
+enum GameMark {
+  X
+  O
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  username        String    @unique
+  nickname        String
+  avatarUrl       String?
+  isEmailVerified Boolean   @default(false)
+  emailVerifiedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  sessions           Session[]
+  verificationTokens EmailVerificationToken[]
+  gamesAsX           Game[] @relation("GameXPlayer")
+  gamesAsO           Game[] @relation("GameOPlayer")
+  gamesWon           Game[] @relation("GameWinner")
+  moves              GameMove[]
+
+  @@index([username])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Game {
+  id          String     @id @default(cuid())
+  mode        GameMode
+  status      GameStatus @default(WAITING)
+  board       Json
+  currentTurn GameMark   @default(X)
+
+  xPlayerId String
+  oPlayerId String?
+  winnerId  String?
+
+  startedAt DateTime?
+  endedAt   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  xPlayer User  @relation("GameXPlayer", fields: [xPlayerId], references: [id], onDelete: Cascade)
+  oPlayer User? @relation("GameOPlayer", fields: [oPlayerId], references: [id], onDelete: SetNull)
+  winner  User? @relation("GameWinner", fields: [winnerId], references: [id], onDelete: SetNull)
+  moves   GameMove[]
+
+  @@index([mode, status])
+  @@index([xPlayerId])
+  @@index([oPlayerId])
+  @@index([winnerId])
+  @@index([createdAt])
+}
+
+model GameMove {
+  id         String   @id @default(cuid())
+  gameId     String
+  userId     String?
+  mark       GameMark
+  position   Int
+  moveNumber Int
+  createdAt  DateTime @default(now())
+
+  game Game  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([gameId, position])
+  @@index([gameId, moveNumber])
+  @@index([userId])
+}
