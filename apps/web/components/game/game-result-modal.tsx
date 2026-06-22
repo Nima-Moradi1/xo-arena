@@ -134,9 +134,9 @@ export function GameResultModal({
         <h2 id="game-result-title" className={`mt-5 text-3xl font-black ${content.titleStyle}`}>{content.title}</h2>
         <p id="game-result-description" className="mt-2 text-sm text-foreground/70">{content.message}</p>
         <div className="mt-7 flex flex-col-reverse gap-2 sm:flex-row sm:justify-center">
-          <Button variant="outline" onClick={onClose}>View board</Button>
+          <Button className="w-full sm:w-32" variant="outline" onClick={onClose}>View board</Button>
           {canReplay ? (
-            <Button ref={primaryActionRef} onClick={onReplay} disabled={replaying}>
+            <Button className="w-full sm:w-32" ref={primaryActionRef} onClick={onReplay} disabled={replaying}>
               {replaying ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
               Play again
             </Button>

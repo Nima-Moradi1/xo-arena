@@ -157,17 +157,22 @@ export default function PlayPage() {
             <Badge variant={game.status === "IN_PROGRESS" ? "default" : "secondary"}>{gameStatusLabel(game.status)}</Badge>
           </div>
           <h1 className="text-3xl font-black tracking-tight">Game room</h1>
-          <p className="mt-2 text-muted-foreground">{statusMessage}</p>
+          <p
+            className={game.status === "WAITING" ? "mt-2 animate-pulse font-semibold text-primary" : "mt-2 text-muted-foreground"}
+            aria-live="polite"
+          >
+            {statusMessage}
+          </p>
         </div>
         <div className="flex flex-wrap gap-2">
           {isFinished && game.mode === "SINGLE_PLAYER" ? (
-            <Button onClick={replaySinglePlayerGame} disabled={replaying}>
+            <Button className="w-32" onClick={replaySinglePlayerGame} disabled={replaying}>
               {replaying ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
               Play again
             </Button>
           ) : null}
-          <Button variant="outline" onClick={copyGameId}><Copy className="h-4 w-4" /> Copy ID</Button>
-          <Button variant="outline" onClick={() => router.push("/lobby")}><RotateCcw className="h-4 w-4" /> Lobby</Button>
+          <Button className="w-32" variant="outline" onClick={copyGameId}><Copy className="h-4 w-4" /> Copy ID</Button>
+          <Button className="w-32" variant="outline" onClick={() => router.push("/lobby")}><RotateCcw className="h-4 w-4" /> Lobby</Button>
         </div>
       </div>
 
@@ -186,7 +191,12 @@ export default function PlayPage() {
 
         <div className="space-y-4">
           <PlayerCard player={game.xPlayer} mark="X" active={game.currentTurn === "X" && game.status === "IN_PROGRESS"} />
-          <PlayerCard player={game.oPlayer} mark="O" active={game.currentTurn === "O" && game.status === "IN_PROGRESS"} />
+          <PlayerCard
+            player={game.oPlayer}
+            mark="O"
+            active={game.currentTurn === "O" && game.status === "IN_PROGRESS"}
+            waiting={game.mode === "ONLINE" && game.status === "WAITING" && !game.oPlayer}
+          />
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
