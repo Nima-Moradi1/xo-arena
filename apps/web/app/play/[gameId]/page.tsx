@@ -140,6 +140,7 @@ export default function PlayPage() {
 
   const isPlayersTurn = game.status === "IN_PROGRESS" && viewerMark === game.currentTurn;
   const boardDisabled = busy || !isPlayersTurn;
+  const isFinished = game.status === "X_WON" || game.status === "O_WON" || game.status === "DRAW";
   const result = game.status === "DRAW"
     ? "draw"
     : (game.status === "X_WON" && viewerMark === "X") || (game.status === "O_WON" && viewerMark === "O")
@@ -158,7 +159,13 @@ export default function PlayPage() {
           <h1 className="text-3xl font-black tracking-tight">Game room</h1>
           <p className="mt-2 text-muted-foreground">{statusMessage}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {isFinished && game.mode === "SINGLE_PLAYER" ? (
+            <Button onClick={replaySinglePlayerGame} disabled={replaying}>
+              {replaying ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
+              Play again
+            </Button>
+          ) : null}
           <Button variant="outline" onClick={copyGameId}><Copy className="h-4 w-4" /> Copy ID</Button>
           <Button variant="outline" onClick={() => router.push("/lobby")}><RotateCcw className="h-4 w-4" /> Lobby</Button>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { Handshake, Loader2, RotateCcw, Skull, Trophy, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -33,12 +33,31 @@ const resultContent = {
   }
 } as const;
 
-const confetti = Array.from({ length: 42 }, (_, index) => ({
-  left: (index * 37) % 100,
-  delay: (index % 9) * 0.12,
-  duration: 2.7 + (index % 5) * 0.35,
-  color: ["#06b6d4", "#f97316", "#facc15", "#22c55e", "#ec4899"][index % 5]
-}));
+const confettiColors = ["#22d3ee", "#fb7185", "#fbbf24", "#4ade80", "#a78bfa", "#f97316"];
+
+const confetti = Array.from({ length: 64 }, (_, index) => {
+  const wide = index % 3 === 0;
+  const round = index % 7 === 0;
+  const sway = ((index * 17) % 9) + 3;
+  const spin = 540 + (index % 6) * 160;
+
+  return {
+    left: (index * 47 + 11) % 100,
+    delay: (index % 13) * 0.11,
+    duration: 4.8 + (index % 8) * 0.32,
+    color: confettiColors[index % confettiColors.length],
+    drift: `${((index * 29) % 25) - 12}rem`,
+    sway: `${sway}rem`,
+    swayStart: `${sway * -0.25}rem`,
+    swayBack: `${sway * -0.65}rem`,
+    spin: `${spin}deg`,
+    spinMid: `${spin * 0.3}deg`,
+    spinLate: `${spin * 0.62}deg`,
+    width: wide ? "0.9rem" : "0.5rem",
+    height: wide ? "0.38rem" : round ? "0.62rem" : "1.05rem",
+    radius: round ? "999px" : index % 4 === 0 ? "50% 10%" : "0.15rem"
+  };
+});
 
 export function GameResultModal({
   open,
@@ -83,8 +102,18 @@ export function GameResultModal({
                 left: `${piece.left}%`,
                 animationDelay: `${piece.delay}s`,
                 animationDuration: `${piece.duration}s`,
-                backgroundColor: piece.color
-              }}
+                backgroundColor: piece.color,
+                width: piece.width,
+                height: piece.height,
+                borderRadius: piece.radius,
+                "--confetti-drift": piece.drift,
+                "--confetti-sway": piece.sway,
+                "--confetti-sway-start": piece.swayStart,
+                "--confetti-sway-back": piece.swayBack,
+                "--confetti-spin": piece.spin,
+                "--confetti-spin-mid": piece.spinMid,
+                "--confetti-spin-late": piece.spinLate
+              } as CSSProperties}
             />
           ))}
         </div>

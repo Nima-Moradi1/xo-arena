@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Gamepad2, LockKeyhole, MonitorSmartphone, Sparkles, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/hooks/use-auth";
 
 const features = [
   {
@@ -27,6 +30,8 @@ const features = [
 ];
 
 export default function HomePage() {
+  const { user, isLoading } = useAuth();
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
       <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
@@ -42,11 +47,13 @@ export default function HomePage() {
             Your profile keeps your match history close wherever you play.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" asChild>
-              <Link href="/signup">
-                Create account <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            {!isLoading && !user ? (
+              <Button size="lg" asChild>
+                <Link href="/signup">
+                  Create account <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            ) : null}
             <Button size="lg" variant="outline" asChild>
               <Link href="/lobby">Go to lobby</Link>
             </Button>
