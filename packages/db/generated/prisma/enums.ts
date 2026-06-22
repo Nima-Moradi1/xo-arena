@@ -35,3 +35,13 @@ export const GameMark = {
 } as const
 
 export type GameMark = (typeof GameMark)[keyof typeof GameMark]
+
+
+export const ComputerDifficulty = {
+  EASY: 'EASY',
+  MEDIUM: 'MEDIUM',
+  HARD: 'HARD',
+  EXPERT: 'EXPERT'
+} as const
+
+export type ComputerDifficulty = (typeof ComputerDifficulty)[keyof typeof ComputerDifficulty]

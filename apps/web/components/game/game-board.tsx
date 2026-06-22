@@ -7,15 +7,17 @@ export function GameBoard({ board, disabled, onMove }: { board: Board; disabled?
   const winningLine = getWinningLine(board);
 
   return (
-    <div className="grid grid-cols-3 gap-3" aria-label="XO board">
+    <div className="mx-auto grid w-full max-w-[460px] grid-cols-3 gap-2.5" aria-label="XO board">
       {board.map((cell, index) => {
         const isWinning = winningLine?.includes(index) ?? false;
         return (
           <button
             key={index}
             className={cn(
-              "flex aspect-square min-h-24 items-center justify-center rounded-2xl border bg-card text-5xl font-black shadow-sm transition hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-32 sm:text-7xl",
-              isWinning && "bg-primary text-primary-foreground hover:bg-primary",
+              "flex aspect-square items-center justify-center rounded-xl border-2 bg-card/85 text-4xl font-black shadow-sm transition hover:-translate-y-0.5 hover:border-primary/50 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-6xl",
+              cell === "X" && !isWinning && "text-[hsl(var(--mark-x))]",
+              cell === "O" && !isWinning && "text-[hsl(var(--mark-o))]",
+              isWinning && "border-transparent bg-[hsl(var(--success))] text-white shadow-lg shadow-emerald-500/20 hover:bg-[hsl(var(--success))]",
               disabled && "cursor-not-allowed opacity-80"
             )}
             disabled={disabled || Boolean(cell)}

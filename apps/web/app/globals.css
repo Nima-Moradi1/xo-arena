@@ -3,48 +3,54 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  --background: 186 60% 97%;
+  --foreground: 218 45% 15%;
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 218 45% 15%;
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
-  --radius: 0.85rem;
+  --popover-foreground: 218 45% 15%;
+  --primary: 188 86% 36%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 36 100% 91%;
+  --secondary-foreground: 24 80% 27%;
+  --muted: 187 38% 92%;
+  --muted-foreground: 215 18% 42%;
+  --accent: 168 64% 89%;
+  --accent-foreground: 176 70% 22%;
+  --destructive: 354 76% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 187 35% 81%;
+  --input: 187 35% 81%;
+  --ring: 188 86% 36%;
+  --success: 151 65% 42%;
+  --mark-x: 18 91% 56%;
+  --mark-o: 190 91% 39%;
+  --radius: 1rem;
 }
 
 .dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 6.5%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+  --background: 218 52% 10%;
+  --foreground: 186 40% 95%;
+  --card: 217 45% 14%;
+  --card-foreground: 186 40% 95%;
+  --popover: 217 45% 13%;
+  --popover-foreground: 186 40% 95%;
+  --primary: 185 84% 48%;
+  --primary-foreground: 218 60% 8%;
+  --secondary: 28 55% 23%;
+  --secondary-foreground: 39 95% 78%;
+  --muted: 215 32% 20%;
+  --muted-foreground: 190 16% 67%;
+  --accent: 171 44% 22%;
+  --accent-foreground: 168 68% 82%;
+  --destructive: 354 70% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 202 33% 27%;
+  --input: 202 33% 27%;
+  --ring: 185 84% 48%;
+  --success: 151 65% 45%;
+  --mark-x: 24 96% 62%;
+  --mark-o: 185 84% 52%;
 }
 
 * {
@@ -57,9 +63,44 @@ html {
 
 body {
   min-height: 100%;
-  background: hsl(var(--background));
+  background-color: hsl(var(--background));
+  background-image:
+    radial-gradient(circle at 12% 8%, hsl(var(--primary) / 0.16), transparent 28rem),
+    radial-gradient(circle at 88% 18%, hsl(var(--mark-x) / 0.12), transparent 24rem),
+    linear-gradient(135deg, transparent 0 48%, hsl(var(--primary) / 0.035) 48% 52%, transparent 52% 100%);
+  background-size: auto, auto, 46px 46px;
+  background-attachment: fixed;
   color: hsl(var(--foreground));
   font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -2rem;
+  width: 0.65rem;
+  height: 1rem;
+  border-radius: 0.2rem;
+  animation-name: confetti-fall;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.35, 1);
+  animation-fill-mode: both;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(4rem, 110vh, 0) rotate(760deg);
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    animation: none;
+    display: none;
+  }
 }
 
 ::selection {

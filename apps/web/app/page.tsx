@@ -32,14 +32,14 @@ export default function HomePage() {
       <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm text-muted-foreground">
-            <Gamepad2 className="h-4 w-4" /> Fullstack X-O with MySQL
+            <Gamepad2 className="h-4 w-4" /> Quick matches. Smart opponents. Real rivals.
           </div>
           <h1 className="text-4xl font-black tracking-tight sm:text-6xl">
             Play X-O against the computer or real online players.
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-            XO Arena is a production-style starter: Next.js latest, Tailwind, shadCN-style UI, TypeScript,
-            Express, Socket.IO, Prisma, MySQL, profile photos, history logs, and PWA install support.
+            Pick your challenge, sharpen your strategy, and jump between computer matches and live online games.
+            Your profile keeps your match history close wherever you play.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button size="lg" asChild>

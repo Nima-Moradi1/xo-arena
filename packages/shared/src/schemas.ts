@@ -42,6 +42,12 @@ export const gameMoveSchema = z.object({
   position: z.number().int().min(0).max(8)
 });
 
+export const computerDifficultySchema = z.enum(["EASY", "MEDIUM", "HARD", "EXPERT"]);
+
+export const createSinglePlayerGameSchema = z.object({
+  difficulty: computerDifficultySchema.default("MEDIUM")
+});
+
 export const gameIdSchema = z.object({
   gameId: z.string().min(1)
 });

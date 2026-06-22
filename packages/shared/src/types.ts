@@ -2,6 +2,7 @@ import type { Board, Mark } from "./game";
 
 export type GameMode = "SINGLE_PLAYER" | "ONLINE";
 export type GameStatus = "WAITING" | "IN_PROGRESS" | "X_WON" | "O_WON" | "DRAW" | "ABANDONED";
+export type ComputerDifficulty = "EASY" | "MEDIUM" | "HARD" | "EXPERT";
 
 export type PublicUser = {
   id: string;
@@ -26,6 +27,7 @@ export type GameDto = {
   id: string;
   mode: GameMode;
   status: GameStatus;
+  difficulty: ComputerDifficulty | null;
   board: Board;
   currentTurn: Mark;
   xPlayer: PublicUser;

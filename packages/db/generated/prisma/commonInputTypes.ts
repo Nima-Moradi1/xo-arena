@@ -162,6 +162,13 @@ export type EnumGameStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumGameStatusFilter<$PrismaModel> | $Enums.GameStatus
 }
 
+export type EnumComputerDifficultyNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComputerDifficulty | Prisma.EnumComputerDifficultyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComputerDifficulty[] | null
+  notIn?: $Enums.ComputerDifficulty[] | null
+  not?: Prisma.NestedEnumComputerDifficultyNullableFilter<$PrismaModel> | $Enums.ComputerDifficulty | null
+}
+
 export type JsonFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -211,6 +218,16 @@ export type EnumGameStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumGameStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumGameStatusFilter<$PrismaModel>
+}
+
+export type EnumComputerDifficultyNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComputerDifficulty | Prisma.EnumComputerDifficultyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComputerDifficulty[] | null
+  notIn?: $Enums.ComputerDifficulty[] | null
+  not?: Prisma.NestedEnumComputerDifficultyNullableWithAggregatesFilter<$PrismaModel> | $Enums.ComputerDifficulty | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumComputerDifficultyNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumComputerDifficultyNullableFilter<$PrismaModel>
 }
 
 export type JsonWithAggregatesFilter<$PrismaModel = never> =
@@ -442,6 +459,13 @@ export type NestedEnumGameStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumGameStatusFilter<$PrismaModel> | $Enums.GameStatus
 }
 
+export type NestedEnumComputerDifficultyNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComputerDifficulty | Prisma.EnumComputerDifficultyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComputerDifficulty[] | null
+  notIn?: $Enums.ComputerDifficulty[] | null
+  not?: Prisma.NestedEnumComputerDifficultyNullableFilter<$PrismaModel> | $Enums.ComputerDifficulty | null
+}
+
 export type NestedEnumGameMarkFilter<$PrismaModel = never> = {
   equals?: $Enums.GameMark | Prisma.EnumGameMarkFieldRefInput<$PrismaModel>
   in?: $Enums.GameMark[]
@@ -467,6 +491,16 @@ export type NestedEnumGameStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumGameStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumGameStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumComputerDifficultyNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComputerDifficulty | Prisma.EnumComputerDifficultyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComputerDifficulty[] | null
+  notIn?: $Enums.ComputerDifficulty[] | null
+  not?: Prisma.NestedEnumComputerDifficultyNullableWithAggregatesFilter<$PrismaModel> | $Enums.ComputerDifficulty | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumComputerDifficultyNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumComputerDifficultyNullableFilter<$PrismaModel>
 }
 
 export type NestedJsonFilter<$PrismaModel = never> =

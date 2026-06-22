@@ -26,6 +26,13 @@ enum GameMark {
   O
 }
 
+enum ComputerDifficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
 model User {
   id              String    @id @default(cuid())
   email           String    @unique
@@ -79,6 +86,7 @@ model Game {
   id          String     @id @default(cuid())
   mode        GameMode
   status      GameStatus @default(WAITING)
+  difficulty  ComputerDifficulty?
   board       Json
   currentTurn GameMark   @default(X)
 

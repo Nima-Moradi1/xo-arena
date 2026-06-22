@@ -117,6 +117,7 @@ export const GameScalarFieldEnum = {
   id: 'id',
   mode: 'mode',
   status: 'status',
+  difficulty: 'difficulty',
   board: 'board',
   currentTurn: 'currentTurn',
   xPlayerId: 'xPlayerId',

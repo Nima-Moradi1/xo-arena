@@ -1,3 +1,5 @@
+import type { ComputerDifficulty } from "./types";
+
 export type Mark = "X" | "O";
 export type BoardCell = Mark | null;
 export type Board = readonly BoardCell[];
@@ -117,4 +119,38 @@ export function getBestComputerMove(board: Board): number | null {
   }
 
   return bestMove;
+}
+
+function getOpenPositions(board: Board): number[] {
+  return board.flatMap((cell, index) => (cell ? [] : [index]));
+}
+
+function getRandomMove(board: Board): number | null {
+  const openPositions = getOpenPositions(board);
+  if (openPositions.length === 0) return null;
+  return openPositions[Math.floor(Math.random() * openPositions.length)] ?? null;
+}
+
+function getImmediateMove(board: Board, mark: Mark): number | null {
+  for (const position of getOpenPositions(board)) {
+    if (getWinner(makeMove(board, position, mark)) === mark) return position;
+  }
+  return null;
+}
+
+export function getComputerMove(board: Board, difficulty: ComputerDifficulty): number | null {
+  if (getWinner(board) || isDraw(board)) return null;
+
+  if (difficulty === "EASY") return getRandomMove(board);
+
+  const winningMove = getImmediateMove(board, "O");
+  if (winningMove !== null) return winningMove;
+
+  if (difficulty === "MEDIUM") return getRandomMove(board);
+
+  const blockingMove = getImmediateMove(board, "X");
+  if (blockingMove !== null) return blockingMove;
+
+  if (difficulty === "HARD" && Math.random() < 0.35) return getRandomMove(board);
+  return getBestComputerMove(board);
 }

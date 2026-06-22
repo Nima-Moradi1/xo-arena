@@ -6,6 +6,7 @@ import { io, type Socket } from "socket.io-client";
 import { Copy, Loader2, RotateCcw } from "lucide-react";
 import type { ClientToServerEvents, GameDto, Mark, ServerToClientEvents } from "@xo/shared";
 import { GameBoard } from "@/components/game/game-board";
+import { GameResultModal } from "@/components/game/game-result-modal";
 import { PlayerCard } from "@/components/game/player-card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,8 @@ export default function PlayPage() {
   const [game, setGame] = useState<GameDto | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [replaying, setReplaying] = useState(false);
+  const [resultOpen, setResultOpen] = useState(false);
   const socketRef = useRef<GameSocket | null>(null);
 
   const viewerMark: Mark | null = useMemo(() => {
@@ -80,6 +83,12 @@ export default function PlayPage() {
     return () => window.clearInterval(interval);
   }, [game?.status, gameId]);
 
+  useEffect(() => {
+    if (game?.status === "X_WON" || game?.status === "O_WON" || game?.status === "DRAW") {
+      setResultOpen(true);
+    }
+  }, [game?.id, game?.status]);
+
   async function handleMove(position: number) {
     if (!game || busy || game.status !== "IN_PROGRESS") return;
     setError(null);
@@ -106,19 +115,44 @@ export default function PlayPage() {
     await navigator.clipboard.writeText(game.id);
   }
 
+  async function replaySinglePlayerGame() {
+    if (!game || game.mode !== "SINGLE_PLAYER") return;
+    setError(null);
+    setReplaying(true);
+    try {
+      const data = await apiFetch<{ game: GameDto }>("/games/single", {
+        method: "POST",
+        body: JSON.stringify({ difficulty: game.difficulty ?? "MEDIUM" })
+      });
+      setResultOpen(false);
+      setGame(data.game);
+      router.replace(`/play/${data.game.id}`);
+    } catch (err) {
+      setError(err instanceof ApiClientError ? err.message : "Could not start another game.");
+    } finally {
+      setReplaying(false);
+    }
+  }
+
   if (isLoading || !user || !game) {
     return <div className="mx-auto max-w-6xl px-4 py-16 text-muted-foreground">Loading game...</div>;
   }
 
   const isPlayersTurn = game.status === "IN_PROGRESS" && viewerMark === game.currentTurn;
   const boardDisabled = busy || !isPlayersTurn;
+  const result = game.status === "DRAW"
+    ? "draw"
+    : (game.status === "X_WON" && viewerMark === "X") || (game.status === "O_WON" && viewerMark === "O")
+      ? "win"
+      : "lose";
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <Badge variant="secondary">{game.mode === "SINGLE_PLAYER" ? "Single player" : "Online"}</Badge>
+            {game.difficulty ? <Badge variant="outline">{game.difficulty.toLowerCase()}</Badge> : null}
             <Badge variant={game.status === "IN_PROGRESS" ? "default" : "secondary"}>{gameStatusLabel(game.status)}</Badge>
           </div>
           <h1 className="text-3xl font-black tracking-tight">Game room</h1>
@@ -136,8 +170,8 @@ export default function PlayPage() {
         </Alert>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-        <Card>
+      <div className="grid items-start justify-center gap-6 lg:grid-cols-[minmax(0,520px)_340px]">
+        <Card className="w-full border-primary/20 bg-card/80">
           <CardContent className="p-4 sm:p-6">
             <GameBoard board={game.board} disabled={boardDisabled} onMove={handleMove} />
           </CardContent>
@@ -151,7 +185,7 @@ export default function PlayPage() {
               <CardTitle className="flex items-center gap-2 text-lg">
                 Move log {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               </CardTitle>
-              <CardDescription>Every move is saved to MySQL.</CardDescription>
+              <CardDescription>Review each turn from the current match.</CardDescription>
             </CardHeader>
             <CardContent>
               {game.moves.length === 0 ? (
@@ -170,6 +204,14 @@ export default function PlayPage() {
           </Card>
         </div>
       </div>
+      <GameResultModal
+        open={resultOpen}
+        result={result}
+        canReplay={game.mode === "SINGLE_PLAYER"}
+        replaying={replaying}
+        onClose={() => setResultOpen(false)}
+        onReplay={replaySinglePlayerGame}
+      />
     </div>
   );
 }

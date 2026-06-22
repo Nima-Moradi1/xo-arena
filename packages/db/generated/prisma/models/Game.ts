@@ -28,6 +28,7 @@ export type GameMinAggregateOutputType = {
   id: string | null
   mode: $Enums.GameMode | null
   status: $Enums.GameStatus | null
+  difficulty: $Enums.ComputerDifficulty | null
   currentTurn: $Enums.GameMark | null
   xPlayerId: string | null
   oPlayerId: string | null
@@ -42,6 +43,7 @@ export type GameMaxAggregateOutputType = {
   id: string | null
   mode: $Enums.GameMode | null
   status: $Enums.GameStatus | null
+  difficulty: $Enums.ComputerDifficulty | null
   currentTurn: $Enums.GameMark | null
   xPlayerId: string | null
   oPlayerId: string | null
@@ -56,6 +58,7 @@ export type GameCountAggregateOutputType = {
   id: number
   mode: number
   status: number
+  difficulty: number
   board: number
   currentTurn: number
   xPlayerId: number
@@ -73,6 +76,7 @@ export type GameMinAggregateInputType = {
   id?: true
   mode?: true
   status?: true
+  difficulty?: true
   currentTurn?: true
   xPlayerId?: true
   oPlayerId?: true
@@ -87,6 +91,7 @@ export type GameMaxAggregateInputType = {
   id?: true
   mode?: true
   status?: true
+  difficulty?: true
   currentTurn?: true
   xPlayerId?: true
   oPlayerId?: true
@@ -101,6 +106,7 @@ export type GameCountAggregateInputType = {
   id?: true
   mode?: true
   status?: true
+  difficulty?: true
   board?: true
   currentTurn?: true
   xPlayerId?: true
@@ -189,6 +195,7 @@ export type GameGroupByOutputType = {
   id: string
   mode: $Enums.GameMode
   status: $Enums.GameStatus
+  difficulty: $Enums.ComputerDifficulty | null
   board: runtime.JsonValue
   currentTurn: $Enums.GameMark
   xPlayerId: string
@@ -225,6 +232,7 @@ export type GameWhereInput = {
   id?: Prisma.StringFilter<"Game"> | string
   mode?: Prisma.EnumGameModeFilter<"Game"> | $Enums.GameMode
   status?: Prisma.EnumGameStatusFilter<"Game"> | $Enums.GameStatus
+  difficulty?: Prisma.EnumComputerDifficultyNullableFilter<"Game"> | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonFilter<"Game">
   currentTurn?: Prisma.EnumGameMarkFilter<"Game"> | $Enums.GameMark
   xPlayerId?: Prisma.StringFilter<"Game"> | string
@@ -244,6 +252,7 @@ export type GameOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   mode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrderInput | Prisma.SortOrder
   board?: Prisma.SortOrder
   currentTurn?: Prisma.SortOrder
   xPlayerId?: Prisma.SortOrder
@@ -267,6 +276,7 @@ export type GameWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.GameWhereInput | Prisma.GameWhereInput[]
   mode?: Prisma.EnumGameModeFilter<"Game"> | $Enums.GameMode
   status?: Prisma.EnumGameStatusFilter<"Game"> | $Enums.GameStatus
+  difficulty?: Prisma.EnumComputerDifficultyNullableFilter<"Game"> | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonFilter<"Game">
   currentTurn?: Prisma.EnumGameMarkFilter<"Game"> | $Enums.GameMark
   xPlayerId?: Prisma.StringFilter<"Game"> | string
@@ -286,6 +296,7 @@ export type GameOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   mode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrderInput | Prisma.SortOrder
   board?: Prisma.SortOrder
   currentTurn?: Prisma.SortOrder
   xPlayerId?: Prisma.SortOrder
@@ -307,6 +318,7 @@ export type GameScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Game"> | string
   mode?: Prisma.EnumGameModeWithAggregatesFilter<"Game"> | $Enums.GameMode
   status?: Prisma.EnumGameStatusWithAggregatesFilter<"Game"> | $Enums.GameStatus
+  difficulty?: Prisma.EnumComputerDifficultyNullableWithAggregatesFilter<"Game"> | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonWithAggregatesFilter<"Game">
   currentTurn?: Prisma.EnumGameMarkWithAggregatesFilter<"Game"> | $Enums.GameMark
   xPlayerId?: Prisma.StringWithAggregatesFilter<"Game"> | string
@@ -322,6 +334,7 @@ export type GameCreateInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   startedAt?: Date | string | null
@@ -338,6 +351,7 @@ export type GameUncheckedCreateInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   xPlayerId: string
@@ -354,6 +368,7 @@ export type GameUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -370,6 +385,7 @@ export type GameUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   xPlayerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -386,6 +402,7 @@ export type GameCreateManyInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   xPlayerId: string
@@ -401,6 +418,7 @@ export type GameUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -413,6 +431,7 @@ export type GameUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   xPlayerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -444,6 +463,7 @@ export type GameCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
   board?: Prisma.SortOrder
   currentTurn?: Prisma.SortOrder
   xPlayerId?: Prisma.SortOrder
@@ -459,6 +479,7 @@ export type GameMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
   currentTurn?: Prisma.SortOrder
   xPlayerId?: Prisma.SortOrder
   oPlayerId?: Prisma.SortOrder
@@ -473,6 +494,7 @@ export type GameMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   mode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  difficulty?: Prisma.SortOrder
   currentTurn?: Prisma.SortOrder
   xPlayerId?: Prisma.SortOrder
   oPlayerId?: Prisma.SortOrder
@@ -622,6 +644,10 @@ export type EnumGameStatusFieldUpdateOperationsInput = {
   set?: $Enums.GameStatus
 }
 
+export type NullableEnumComputerDifficultyFieldUpdateOperationsInput = {
+  set?: $Enums.ComputerDifficulty | null
+}
+
 export type EnumGameMarkFieldUpdateOperationsInput = {
   set?: $Enums.GameMark
 }
@@ -644,6 +670,7 @@ export type GameCreateWithoutXPlayerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   startedAt?: Date | string | null
@@ -659,6 +686,7 @@ export type GameUncheckedCreateWithoutXPlayerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   oPlayerId?: string | null
@@ -684,6 +712,7 @@ export type GameCreateWithoutOPlayerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   startedAt?: Date | string | null
@@ -699,6 +728,7 @@ export type GameUncheckedCreateWithoutOPlayerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   xPlayerId: string
@@ -724,6 +754,7 @@ export type GameCreateWithoutWinnerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   startedAt?: Date | string | null
@@ -739,6 +770,7 @@ export type GameUncheckedCreateWithoutWinnerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   xPlayerId: string
@@ -783,6 +815,7 @@ export type GameScalarWhereInput = {
   id?: Prisma.StringFilter<"Game"> | string
   mode?: Prisma.EnumGameModeFilter<"Game"> | $Enums.GameMode
   status?: Prisma.EnumGameStatusFilter<"Game"> | $Enums.GameStatus
+  difficulty?: Prisma.EnumComputerDifficultyNullableFilter<"Game"> | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonFilter<"Game">
   currentTurn?: Prisma.EnumGameMarkFilter<"Game"> | $Enums.GameMark
   xPlayerId?: Prisma.StringFilter<"Game"> | string
@@ -830,6 +863,7 @@ export type GameCreateWithoutMovesInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   startedAt?: Date | string | null
@@ -845,6 +879,7 @@ export type GameUncheckedCreateWithoutMovesInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   xPlayerId: string
@@ -876,6 +911,7 @@ export type GameUpdateWithoutMovesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -891,6 +927,7 @@ export type GameUncheckedUpdateWithoutMovesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   xPlayerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -906,6 +943,7 @@ export type GameCreateManyXPlayerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   oPlayerId?: string | null
@@ -920,6 +958,7 @@ export type GameCreateManyOPlayerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   xPlayerId: string
@@ -934,6 +973,7 @@ export type GameCreateManyWinnerInput = {
   id?: string
   mode: $Enums.GameMode
   status?: $Enums.GameStatus
+  difficulty?: $Enums.ComputerDifficulty | null
   board: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: $Enums.GameMark
   xPlayerId: string
@@ -948,6 +988,7 @@ export type GameUpdateWithoutXPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -963,6 +1004,7 @@ export type GameUncheckedUpdateWithoutXPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   oPlayerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -978,6 +1020,7 @@ export type GameUncheckedUpdateManyWithoutXPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   oPlayerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -992,6 +1035,7 @@ export type GameUpdateWithoutOPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1007,6 +1051,7 @@ export type GameUncheckedUpdateWithoutOPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   xPlayerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1022,6 +1067,7 @@ export type GameUncheckedUpdateManyWithoutOPlayerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   xPlayerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1036,6 +1082,7 @@ export type GameUpdateWithoutWinnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1051,6 +1098,7 @@ export type GameUncheckedUpdateWithoutWinnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   xPlayerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1066,6 +1114,7 @@ export type GameUncheckedUpdateManyWithoutWinnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   mode?: Prisma.EnumGameModeFieldUpdateOperationsInput | $Enums.GameMode
   status?: Prisma.EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+  difficulty?: Prisma.NullableEnumComputerDifficultyFieldUpdateOperationsInput | $Enums.ComputerDifficulty | null
   board?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentTurn?: Prisma.EnumGameMarkFieldUpdateOperationsInput | $Enums.GameMark
   xPlayerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1111,6 +1160,7 @@ export type GameSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   mode?: boolean
   status?: boolean
+  difficulty?: boolean
   board?: boolean
   currentTurn?: boolean
   xPlayerId?: boolean
@@ -1133,6 +1183,7 @@ export type GameSelectScalar = {
   id?: boolean
   mode?: boolean
   status?: boolean
+  difficulty?: boolean
   board?: boolean
   currentTurn?: boolean
   xPlayerId?: boolean
@@ -1144,7 +1195,7 @@ export type GameSelectScalar = {
   updatedAt?: boolean
 }
 
-export type GameOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mode" | "status" | "board" | "currentTurn" | "xPlayerId" | "oPlayerId" | "winnerId" | "startedAt" | "endedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["game"]>
+export type GameOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mode" | "status" | "difficulty" | "board" | "currentTurn" | "xPlayerId" | "oPlayerId" | "winnerId" | "startedAt" | "endedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["game"]>
 export type GameInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   xPlayer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   oPlayer?: boolean | Prisma.Game$oPlayerArgs<ExtArgs>
@@ -1165,6 +1216,7 @@ export type $GamePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     mode: $Enums.GameMode
     status: $Enums.GameStatus
+    difficulty: $Enums.ComputerDifficulty | null
     board: runtime.JsonValue
     currentTurn: $Enums.GameMark
     xPlayerId: string
@@ -1550,6 +1602,7 @@ export interface GameFieldRefs {
   readonly id: Prisma.FieldRef<"Game", 'String'>
   readonly mode: Prisma.FieldRef<"Game", 'GameMode'>
   readonly status: Prisma.FieldRef<"Game", 'GameStatus'>
+  readonly difficulty: Prisma.FieldRef<"Game", 'ComputerDifficulty'>
   readonly board: Prisma.FieldRef<"Game", 'Json'>
   readonly currentTurn: Prisma.FieldRef<"Game", 'GameMark'>
   readonly xPlayerId: Prisma.FieldRef<"Game", 'String'>

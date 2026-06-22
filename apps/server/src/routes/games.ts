@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { gameMoveSchema } from "@xo/shared";
+import { createSinglePlayerGameSchema, gameMoveSchema } from "@xo/shared";
 import { ApiError, asyncHandler } from "../lib/http";
 import { requireAuth } from "../middleware/require-auth";
 import {
@@ -24,7 +24,8 @@ function getGameId(value: string | string[] | undefined) {
 gamesRouter.post(
   "/single",
   asyncHandler(async (req, res) => {
-    const game = await createSinglePlayerGame(req.user!.id);
+    const input = createSinglePlayerGameSchema.parse(req.body ?? {});
+    const game = await createSinglePlayerGame(req.user!.id, input.difficulty);
     res.status(201).json({ game });
   })
 );

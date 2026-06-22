@@ -1,12 +1,13 @@
 import { prisma, type Prisma } from "@xo/db";
 import {
   createInitialBoard,
-  getBestComputerMove,
+  getComputerMove,
   getWinner,
   isDraw,
   makeMove,
   nextMark,
   type BoardCell,
+  type ComputerDifficulty,
   type GameDto,
   type GameStatus,
   type Mark,
@@ -59,6 +60,7 @@ export function toGameDto(game: GameWithRelations): GameDto {
     id: game.id,
     mode: game.mode,
     status: game.status,
+    difficulty: game.difficulty,
     board: boardFromJson(game.board),
     currentTurn: game.currentTurn,
     xPlayer: publicUser(game.xPlayer),
@@ -99,11 +101,12 @@ export async function getAccessibleGame(gameId: string, userId: string) {
   return toGameDto(game);
 }
 
-export async function createSinglePlayerGame(userId: string) {
+export async function createSinglePlayerGame(userId: string, difficulty: ComputerDifficulty) {
   const game = await prisma.game.create({
     data: {
       mode: "SINGLE_PLAYER",
       status: "IN_PROGRESS",
+      difficulty,
       board: createInitialBoard(),
       currentTurn: "X",
       xPlayerId: userId,
@@ -203,7 +206,7 @@ export async function playSinglePlayerMove(gameId: string, userId: string, posit
     let currentTurn: Mark = "O";
 
     if (!terminal.isTerminal) {
-      const aiPosition = getBestComputerMove(board);
+      const aiPosition = getComputerMove(board, existing.difficulty ?? "MEDIUM");
       if (aiPosition !== null) {
         board = makeMove(board, aiPosition, "O");
         moveNumber += 1;

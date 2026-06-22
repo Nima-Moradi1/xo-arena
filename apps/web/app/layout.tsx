@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#020617" }
+    { media: "(prefers-color-scheme: light)", color: "#ecfeff" },
+    { media: "(prefers-color-scheme: dark)", color: "#071526" }
   ],
   width: "device-width",
   initialScale: 1,
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
-          <div className="min-h-screen bg-background">
+          <div className="min-h-screen">
             <SiteHeader />
             <main>{children}</main>
           </div>
